@@ -246,6 +246,7 @@ export function HeroBanner({
             </div>
           </div>
         </div>
+      </ScrollReveal>
     </div>
   );
 }
