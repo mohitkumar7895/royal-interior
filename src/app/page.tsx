@@ -17,6 +17,7 @@ import { ScrollProgressBar } from '@/components/ScrollProgressBar';
 import { ScrollTicker } from '@/components/ScrollTicker';
 import { ScrollReveal, FloatingScrollControls } from '@/components/ScrollReveal';
 import { ReviewsSection } from '@/components/ReviewsSection';
+import { WhyChooseUsSection } from '@/components/WhyChooseUsSection';
 import { Loader2, Server, CheckCircle2, ShieldCheck, Phone, Mail, MapPin, Database, UserCheck, Table } from 'lucide-react';
 
 export default function RoyalProHome() {
@@ -162,6 +163,14 @@ export default function RoyalProHome() {
         <ProjectGallery
           projects={projects}
           onOpenInquiryForProject={handleProjectSelect}
+        />
+
+        {/* Why Choose Royalpro Section (Right Above Reviews) */}
+        <WhyChooseUsSection
+          onOpenInquiry={() => {
+            setSelectedService(null);
+            setInquiryModalOpen(true);
+          }}
         />
 
         {/* Verified Customer Reviews Section (Right Above Footer) */}
