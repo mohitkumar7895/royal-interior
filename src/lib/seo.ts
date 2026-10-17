@@ -2,17 +2,22 @@ export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ||
   (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : '') ||
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '') ||
-  'https://royal-interior.vercel.app'
+  'https://royalproindustrial.in'
 ).replace(/\/$/, '');
 
 export const SITE_CONFIG = {
-  name: 'Royalpro Industrial Factory Tin Shed Work & Complete Interior Solution',
-  shortName: 'Royalpro Industrial & Interiors',
+  websiteName: 'Royalpro Industrial',
+  name: 'Royalpro Industrial',
+  fullName: 'Royalpro Industrial Factory Tin Shed Work & Complete Interior Solution',
+  legalName: 'Royalpro Industrial Factory Tin Shed Work & Complete Interior Solution',
+  shortName: 'Royalpro Industrial',
+  title: 'Royalpro Industrial | Factory Tin Shed Work & Complete Interior Solution',
   description:
-    'Royalpro - Specialists in Heavy Duty Industrial Factory Sheds, PEB Steel Structure Work, All Welding Work, Cold Storage, Sports Academies, and Complete Interior Solutions (Office, Luxury Home, Modular Kitchens). Call 9557323216.',
+    'Royalpro Industrial - Specialists in Heavy Duty Industrial Factory Sheds, PEB Steel Structure Work, All Welding Work, Cold Storage, Sports Academies, and Complete Interior Solutions (Office, Luxury Home, Modular Kitchens). Call 9557323216.',
   phone: '9557323216',
   telephone: '+919557323216',
   email: 'contact@royalproindustrial.com',
+  logoUrl: `${SITE_URL}/images/royalpro_logo.png`,
   address: {
     streetAddress: 'Chipiyana, Tigri Gol Chakkar, Yusufpur, Nai Basti Dundahera',
     addressLocality: 'Ghaziabad',

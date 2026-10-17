@@ -82,6 +82,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       name: SITE_CONFIG.name,
       telephone: SITE_CONFIG.telephone,
       url: SITE_URL,
+      logo: `${SITE_URL}/images/royalpro_logo.png`,
       address: {
         '@type': 'PostalAddress',
         ...SITE_CONFIG.address,
