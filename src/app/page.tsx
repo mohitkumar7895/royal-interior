@@ -18,6 +18,7 @@ import { ScrollTicker } from '@/components/ScrollTicker';
 import { ScrollReveal, FloatingScrollControls } from '@/components/ScrollReveal';
 import { ReviewsSection } from '@/components/ReviewsSection';
 import { WhyChooseUsSection } from '@/components/WhyChooseUsSection';
+import { Footer } from '@/components/Footer';
 import { Loader2, Server, CheckCircle2, ShieldCheck, Phone, Mail, MapPin, Database, UserCheck, Table } from 'lucide-react';
 
 export default function RoyalProHome() {
@@ -177,56 +178,8 @@ export default function RoyalProHome() {
         <ReviewsSection />
       </main>
 
-      {/* Industrial & Interior Footer - Height Optimized for Mobile */}
-      <footer className="mt-2 sm:mt-4 border-t border-slate-200 bg-white py-4 sm:py-8 text-slate-600 text-xs shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-8">
-          <div className="md:col-span-2 space-y-1.5 sm:space-y-3">
-            <div className="flex items-center gap-2">
-              <span className="font-black text-base sm:text-lg text-slate-900 uppercase tracking-tight font-royal">
-                ROYAL<span className="text-amber-600">PRO</span> INDUSTRIAL & INTERIOR
-              </span>
-            </div>
-            <p className="text-[11px] sm:text-xs text-slate-600 max-w-md leading-relaxed">
-              <strong>Royalpro Industrial Factory Tin Shed Work & Complete Interior Solution</strong> provides heavy industrial steel shed fabrication, cold stores, sports arenas, and turnkey interior design, gypsum ceilings, and modular kitchens.
-            </p>
-          </div>
-
-          <div className="space-y-1.5 sm:space-y-2">
-            <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider font-royal">Direct Helpline</h4>
-            <div className="space-y-1.5 sm:space-y-2 text-slate-600 text-[11px] sm:text-xs">
-              <a
-                href="tel:9557323216"
-                className="flex items-center gap-1.5 text-amber-700 font-bold hover:underline"
-              >
-                <Phone className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                <span>Mobile: 9557323216</span>
-              </a>
-              <p className="flex items-center gap-1.5">
-                <Mail className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                <span>contact@royalproindustrial.com</span>
-              </p>
-              <p className="flex items-start gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
-                <span>Chipiyana, Tigri Gol Chakkar, Yusufpur, Nai Basti Dundahera, Ghaziabad, Uttar Pradesh 201009</span>
-              </p>
-            </div>
-          </div>
-
-          <div className="space-y-1.5 sm:space-y-2">
-            <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider font-royal">Quick Links</h4>
-            <ul className="space-y-1 sm:space-y-1.5 text-slate-600 text-[11px] sm:text-xs">
-              <li>• Welding Work Services</li>
-              <li>• Services List (Complete Interior Solution)</li>
-              <li>• Free On-site Survey & Measurements</li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-3 sm:mt-6 pt-2.5 sm:pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-1 sm:gap-2 text-[10px] sm:text-[11px] text-slate-500">
-          <p>© 2026 Royalpro Industrial Factory Tin Shed Work & Complete Interior Solution. Mobile: 9557323216.</p>
-          <p className="text-slate-400">Structural Fabrication & Luxury Interior Execution</p>
-        </div>
-      </footer>
+      {/* Industrial & Interior Footer with Full HTML Sitemap & Area Directory */}
+      <Footer />
 
       {/* Floating Scroll Controls (Helpline + Back To Top) */}
       <FloatingScrollControls />

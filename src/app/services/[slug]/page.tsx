@@ -27,20 +27,30 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const title = `${service.title} | Royalpro`;
-  const description = `${service.tagline ? service.tagline + '. ' : ''}${service.description.slice(0, 150)}... Starting rate: ${service.startingRate}. Contact: 9557323216.`;
+  const title = `${service.title} in Noida, Gaur City, Gurgaon & Ghaziabad | Royalpro 9557323216`;
+  const description = `${service.tagline ? service.tagline + '. ' : ''}${service.description.slice(0, 140)}... Expert execution across Noida (Sec 62, 63), Gaur City 1 & 2, Gurugram (Manesar), Ghaziabad. Call 9557323216 for free survey.`;
 
   return {
     title,
     description,
     keywords: [
       service.title,
+      `${service.title} Noida`,
+      `${service.title} Gaur City`,
+      `${service.title} Gurgaon`,
+      `${service.title} Ghaziabad`,
+      'Noida Sector 62',
+      'Noida Sector 63',
+      'Gaur City 1',
+      'Gaur City 2',
+      'Greater Noida West',
+      'Gurugram Udyog Vihar',
+      'Manesar IMT',
+      'Ghaziabad Chipiyana',
+      '9557323216',
       service.division === 'welding_industrial' ? 'Welding Work Services' : 'Complete Interior Solution',
       'Royalpro Industrial',
       'Heavy Fabrication',
-      'Ghaziabad',
-      'Noida',
-      'Delhi NCR',
       ...(service.features || []),
     ],
     alternates: {
@@ -88,7 +98,23 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         ...SITE_CONFIG.address,
       },
     },
-    areaServed: ['Delhi NCR', 'Ghaziabad', 'Noida', 'Faridabad', 'Gurgaon', 'Uttar Pradesh'],
+    areaServed: [
+      'Noida',
+      'Noida Sector 62',
+      'Noida Sector 63',
+      'Gaur City',
+      'Gaur City 1',
+      'Gaur City 2',
+      'Greater Noida West',
+      'Gurugram',
+      'Gurgaon',
+      'Manesar',
+      'Ghaziabad',
+      'Chipiyana',
+      'Delhi NCR',
+      'Faridabad',
+      'Uttar Pradesh',
+    ],
     offers: {
       '@type': 'Offer',
       price: service.startingRate,

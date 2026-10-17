@@ -6,6 +6,7 @@ import { Navbar } from '@/components/Navbar';
 import { weldingServices, interiorServices } from '@/lib/services-data';
 import { ServiceItem } from '@/types';
 import { InquiryModal } from '@/components/InquiryModal';
+import { Footer } from '@/components/Footer';
 import {
   Phone,
   ShieldCheck,
@@ -15,6 +16,8 @@ import {
   Hammer,
   ChevronRight,
   Maximize2,
+  MapPin,
+  Map,
 } from 'lucide-react';
 
 interface Props {
@@ -290,6 +293,48 @@ export function ServiceDetailClient({ service }: Props) {
           </div>
         </div>
 
+        {/* Regional Availability & Local Sectors Directory (Local SEO) */}
+        <div className="my-10 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-amber-500/10 via-white to-slate-100 border border-amber-300/60 shadow-sm space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-amber-200/60">
+            <div>
+              <h3 className="text-lg sm:text-xl font-black font-royal text-slate-900">
+                {service.title} in Noida, Gaur City, Gurugram & Ghaziabad
+              </h3>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <a
+                href="tel:9557323216"
+                className="px-4 py-2 rounded-full bg-slate-950 text-amber-300 hover:text-white font-bold text-xs font-mono inline-flex items-center gap-1.5 shadow-sm active:scale-95 transition-all"
+              >
+                <Phone className="w-3.5 h-3.5 text-amber-400" />
+                <span>Call 9557323216</span>
+              </a>
+              <Link
+                href="/sitemap"
+                className="px-3.5 py-2 rounded-full bg-white text-slate-700 hover:text-amber-800 border border-slate-300 font-bold text-xs inline-flex items-center gap-1 active:scale-95 transition-all"
+              >
+                <Map className="w-3.5 h-3.5 text-amber-600" />
+                <span>Full Sitemap</span>
+              </Link>
+            </div>
+          </div>
+
+          <p className="text-xs text-slate-600 leading-relaxed">
+            Royalpro Industrial deploys specialized fabrication and interior engineering teams directly to your site. We provide free 3D structural drawings, load calculations, and same-day site surveys across:
+          </p>
+
+          <div className="flex flex-wrap gap-2 text-xs">
+            <span className="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-800 font-medium">Noida Sector 62 & 63 Industrial Hub</span>
+            <span className="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-800 font-medium">Noida Sector 18 & Sector 150</span>
+            <span className="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-800 font-medium">Gaur City 1 & Gaur City 2</span>
+            <span className="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-800 font-medium">Char Murti & Greater Noida West</span>
+            <span className="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-800 font-medium">Gurugram Udyog Vihar & Manesar IMT</span>
+            <span className="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-800 font-medium">Ghaziabad Chipiyana & Tigri</span>
+            <span className="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-800 font-medium">Crossing Republik & Sahibabad</span>
+          </div>
+        </div>
+
         {/* Related Services in the Same Division */}
         <div className="my-14">
           <div className="flex items-center justify-between mb-6">
@@ -342,10 +387,8 @@ export function ServiceDetailClient({ service }: Props) {
         preSelectedService={service}
       />
 
-      {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-500">
-        <p>© 2026 Royalpro Industrial Factory Tin Shed Work & Complete Interior Solution. Mobile: 9557323216.</p>
-      </footer>
+      {/* Footer with Full HTML Sitemap & Area Directory */}
+      <Footer />
     </div>
   );
 }

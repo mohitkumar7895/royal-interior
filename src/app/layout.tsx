@@ -170,12 +170,27 @@ export default function RootLayout({
       },
     ],
     areaServed: [
-      'Ghaziabad',
       'Noida',
+      'Noida Sector 62',
+      'Noida Sector 63',
+      'Noida Sector 18',
+      'Noida Sector 150',
+      'Gaur City',
+      'Gaur City 1',
+      'Gaur City 2',
+      'Char Murti',
+      'Greater Noida West',
       'Greater Noida',
+      'Gurugram',
+      'Gurgaon',
+      'Udyog Vihar',
+      'Manesar',
+      'Ghaziabad',
+      'Chipiyana',
+      'Crossing Republik',
+      'Sahibabad',
       'Delhi NCR',
       'Faridabad',
-      'Gurugram',
       'Uttar Pradesh',
       'Haryana',
       'India',
@@ -187,7 +202,7 @@ export default function RootLayout({
         {
           '@type': 'OfferCatalog',
           name: 'Welding Work Services',
-          itemListElement: weldingServices.slice(0, 8).map((s) => ({
+          itemListElement: weldingServices.map((s) => ({
             '@type': 'Offer',
             itemOffered: {
               '@type': 'Service',
@@ -200,7 +215,7 @@ export default function RootLayout({
         {
           '@type': 'OfferCatalog',
           name: 'Services List (Complete Interior Solutions)',
-          itemListElement: interiorServices.slice(0, 8).map((s) => ({
+          itemListElement: interiorServices.map((s) => ({
             '@type': 'Offer',
             itemOffered: {
               '@type': 'Service',

@@ -12,6 +12,7 @@ import {
   ArrowRight,
   Menu,
   X,
+  MapPin,
 } from 'lucide-react';
 import { weldingServices, interiorServices } from '@/lib/services-data';
 

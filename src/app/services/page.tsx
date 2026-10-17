@@ -6,6 +6,7 @@ import { Navbar } from '@/components/Navbar';
 import { weldingServices, interiorServices } from '@/lib/services-data';
 import { SITE_CONFIG } from '@/lib/seo';
 import { InquiryModal } from '@/components/InquiryModal';
+import { Footer } from '@/components/Footer';
 import { Building2, Wrench, Phone, MessageSquare, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function ServicesPage() {
@@ -230,9 +231,7 @@ export default function ServicesPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-500">
-        <p>© 2026 {SITE_CONFIG.name}. Mobile: {SITE_CONFIG.phone}.</p>
-      </footer>
+      <Footer />
 
       {/* Inquiry Modal */}
       <InquiryModal

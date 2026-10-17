@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
 import { ShieldCheck, Phone, CheckCircle2, Award, Building2, Wrench, Users, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function AboutPage() {
@@ -116,9 +117,7 @@ export default function AboutPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-500">
-        <p>© 2026 Royalpro Industrial Factory Tin Shed Work & Complete Interior Solution. Mobile: 9557323216.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }
