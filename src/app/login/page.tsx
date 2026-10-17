@@ -48,11 +48,11 @@ export default function LoginPage() {
     <div className="min-h-screen bg-slate-100 flex flex-col justify-center py-8 sm:py-12 px-4 sm:px-6 lg:px-8 text-slate-900">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         {/* Big Full Royalpro Logo */}
-        <Link href="/" className="inline-block p-1 rounded-3xl bg-gradient-to-br from-amber-400 via-amber-500 to-orange-500 shadow-xl mb-4 group" title="Royalpro Home">
+        <Link href="/" className="inline-block p-1 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-orange-500 shadow-xl mb-4 group" title="Royalpro Home">
           <img
             src="/images/royalpro_logo.png"
             alt="Royalpro Logo"
-            className="w-24 h-24 sm:w-28 sm:h-28 rounded-[20px] object-cover bg-slate-950 group-hover:scale-105 transition-transform"
+            className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover bg-slate-950 group-hover:scale-105 transition-transform"
           />
         </Link>
         <h1 className="text-2xl font-black font-royal text-slate-900 tracking-tight">

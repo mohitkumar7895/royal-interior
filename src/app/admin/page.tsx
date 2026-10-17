@@ -455,11 +455,11 @@ export default function AdminDashboardPage() {
         <div className="w-full max-w-md">
           {/* Logo Only Header (As requested: "Sirf logo lgau okay") */}
           <div className="text-center mb-6">
-            <Link href="/" className="inline-block p-1 rounded-3xl bg-gradient-to-br from-amber-400 via-amber-500 to-orange-500 shadow-xl mb-4 group" title="Royalpro Home">
+            <Link href="/" className="inline-block p-1 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-orange-500 shadow-xl mb-4 group" title="Royalpro Home">
               <img
                 src="/images/royalpro_logo.png"
                 alt="RP Golden Logo"
-                className="w-24 h-24 rounded-[20px] object-cover bg-slate-950 group-hover:scale-105 transition-transform"
+                className="w-24 h-24 rounded-full object-cover bg-slate-950 group-hover:scale-105 transition-transform"
               />
             </Link>
             <h1 className="text-2xl font-black font-royal text-slate-900 tracking-tight">
@@ -554,7 +554,7 @@ export default function AdminDashboardPage() {
           <img
             src="/images/royalpro_logo.png"
             alt="RP Golden Logo"
-            className="w-10 h-10 rounded-xl object-cover bg-slate-900 border border-amber-500/40"
+            className="w-10 h-10 rounded-full object-cover bg-slate-900 border border-amber-500/40"
           />
         </Link>
         <button
@@ -573,11 +573,11 @@ export default function AdminDashboardPage() {
         <div>
           {/* Logo Only (Bada Sa Full Logo) */}
           <div className="flex items-center justify-center pb-5 border-b border-slate-800">
-            <Link href="/" className="relative p-1.5 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-orange-500 shadow-xl shadow-amber-500/20 block group" title="Royalpro Home">
+            <Link href="/" className="relative p-1 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-orange-500 shadow-xl shadow-amber-500/20 block group" title="Royalpro Home">
               <img
                 src="/images/royalpro_logo.png"
                 alt="RP Golden Logo"
-                className="w-24 h-24 rounded-[16px] object-cover bg-slate-950 group-hover:scale-105 transition-transform"
+                className="w-24 h-24 rounded-full object-cover bg-slate-950 group-hover:scale-105 transition-transform"
               />
             </Link>
           </div>

@@ -82,14 +82,22 @@ export function Navbar({
 
       {/* Main Navbar */}
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-20 sm:h-24 md:h-26 flex items-center justify-between gap-2 sm:gap-4">
-        {/* Full Brand Logo - Clean, Large, Crisp, Never squished */}
-        <Link href="/" className="flex items-center group cursor-pointer shrink min-w-0 py-1" title="Royalpro Home">
-          <div className="relative p-1 sm:p-1.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-400/25 via-amber-500/15 to-transparent border border-amber-300/50 hover:border-amber-400 transition-all shadow-sm">
+        {/* Full Brand Logo - Clean, Large, Crisp, Circular RP Seal */}
+        <Link href="/" className="flex items-center gap-2.5 sm:gap-3.5 group cursor-pointer shrink min-w-0 py-1" title="Royalpro Home">
+          <div className="relative p-0.5 sm:p-1 rounded-full bg-slate-900 border border-amber-400/50 hover:border-amber-400 transition-all shadow-md group-hover:scale-105 shrink-0">
             <img
               src="/images/royalpro_logo.png"
               alt="Royalpro Industrial Factory Tin Shed Work & Complete Interior Solution"
-              className="h-12 xs:h-14 sm:h-18 md:h-20 w-auto max-w-[210px] xs:max-w-[250px] sm:max-w-[340px] md:max-w-[420px] object-contain rounded-lg sm:rounded-xl drop-shadow-sm group-hover:scale-103 transition-transform duration-300"
+              className="h-12 xs:h-14 sm:h-16 md:h-18 w-12 xs:w-14 sm:w-16 md:w-18 object-contain rounded-full drop-shadow-md"
             />
+          </div>
+          <div className="hidden xs:flex flex-col">
+            <span className="font-royal font-black text-xs sm:text-sm md:text-base text-slate-900 tracking-wider group-hover:text-amber-800 transition-colors leading-tight">
+              ROYALPRO
+            </span>
+            <span className="text-[9px] sm:text-[10px] md:text-[11px] font-bold text-amber-700 tracking-wider uppercase font-royal leading-tight">
+              Industrial & Interior Solution
+            </span>
           </div>
         </Link>
 
@@ -278,11 +286,11 @@ export function Navbar({
           {/* Header Banner: RP Golden Logo with full title & direct call */}
           <div className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-900 via-amber-950 to-slate-900 text-amber-100 border border-amber-500/30 shadow-md">
             <div className="flex items-center justify-between gap-3 mb-2.5">
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-3">
                 <img
                   src="/images/royalpro_logo.png"
                   alt="RP Royalpro Logo"
-                  className="h-12 w-auto object-contain rounded-lg border border-amber-400/40 shadow-xs"
+                  className="h-12 w-12 object-contain rounded-full border border-amber-400/50 shadow-md bg-slate-950 shrink-0"
                 />
                 <div>
                   <h3 className="font-royal font-black text-amber-300 text-xs tracking-wider">

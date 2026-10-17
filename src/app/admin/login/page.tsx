@@ -40,11 +40,11 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 text-slate-900">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <Link href="/" className="inline-block p-1 rounded-3xl bg-gradient-to-br from-amber-400 via-amber-500 to-orange-500 shadow-xl mb-3 group" title="Royalpro Home">
+        <Link href="/" className="inline-block p-1 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-orange-500 shadow-xl mb-3 group" title="Royalpro Home">
           <img
             src="/images/royalpro_logo.png"
             alt="RP Golden Logo"
-            className="w-20 h-20 rounded-[18px] object-cover bg-slate-950 group-hover:scale-105 transition-transform"
+            className="w-20 h-20 rounded-full object-cover bg-slate-950 group-hover:scale-105 transition-transform"
           />
         </Link>
         <h2 className="mt-2 text-2xl font-black font-royal text-slate-800 tracking-tight">

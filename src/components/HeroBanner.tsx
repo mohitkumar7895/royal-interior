@@ -41,7 +41,7 @@ export function HeroBanner({
                 <img
                   src="/images/royalpro_logo.png"
                   alt="RP Golden Logo"
-                  className="w-5 h-5 rounded-md object-cover border border-amber-400"
+                  className="w-5 h-5 rounded-full object-cover border border-amber-400"
                 />
                 <span className="font-royal text-amber-200 uppercase tracking-wider">RP Royalpro Certified</span>
               </div>
