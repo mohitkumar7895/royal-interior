@@ -143,7 +143,7 @@ export function Footer() {
           </div>
 
           <p className="text-[11px] text-slate-600 leading-relaxed">
-            We provide on-site structural welding, factory tin sheds, and turnkey interior design execution across Noida, Gaur City 1 & 2, Gurugram, Ghaziabad, and Delhi NCR.
+            Fast on-site survey within 15-30 minutes across our <strong>10 KM Local Hub</strong>: Chipiyana, Tigri Gol Chakkar, Yusufpur, Nai Basti Dundahera, Crossings Republik, Gaur City 1 & 2, Char Murti, Noida Sector 62 & 63, and Siddhartha Vihar.
           </p>
 
           <Link
@@ -152,10 +152,10 @@ export function Footer() {
           >
             <div>
               <span className="font-bold text-xs text-amber-950 font-royal block">
-                Explore All Service Areas
+                10 KM Fast Dispatch Hub
               </span>
               <span className="text-[10px] text-amber-800">
-                Noida, Gaur City, Gurgaon & Ghaziabad
+                Tigri, Chipiyana, Gaur City, Noida Sec 63 (9557323216)
               </span>
             </div>
             <ArrowRight className="w-4 h-4 text-amber-700 group-hover:translate-x-1 transition-transform" />

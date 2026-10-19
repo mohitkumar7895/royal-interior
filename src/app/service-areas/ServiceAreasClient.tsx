@@ -21,10 +21,39 @@ import {
 } from 'lucide-react';
 
 export function ServiceAreasClient() {
-  const [selectedCity, setSelectedCity] = useState<'all' | 'noida' | 'gaur-city' | 'gurugram' | 'ghaziabad'>('all');
+  const [selectedCity, setSelectedCity] = useState<'all' | '10km-hub' | 'noida' | 'gaur-city' | 'gurugram' | 'ghaziabad'>('all');
   const [isInquiryOpen, setIsInquiryOpen] = useState(false);
 
   const areaData = [
+    {
+      id: '10km-hub',
+      cityKey: '10km-hub',
+      cityName: '10 KM Local Radius (Tigri Gol Chakkar / Chipiyana Hub)',
+      badge: 'Immediate Base (Survey in 15-30 Mins)',
+      title: 'Rapid Welding Work, Factory Tin Sheds & Turnkey Interiors within 10 KM',
+      description:
+        'Official Central Fabrication Facility: Chipiyana, Tigri Gol Chakkar, Yusufpur, Nai Basti Dundahera (201009). Rapid 15-30 minute dispatch across all 10 km localities including Crossings Republik, Gaur City 1 & 2, Char Murti, Noida Sector 62 & 63, and Siddhartha Vihar. Direct Helpline: 9557323216.',
+      leadTime: 'Instant Survey: 15 to 30 Mins (Call 9557323216)',
+      sectors: [
+        { name: 'Chipiyana Buzurg & Tigri Gol Chakkar', tag: 'Official Base Workshop' },
+        { name: 'Yusufpur & Nai Basti Dundahera', tag: 'Metal Fabrication Cluster' },
+        { name: 'Crossings Republik (GH-7, Paramount, Ajnara)', tag: 'Turnkey Luxury Flats' },
+        { name: 'Shahberi & ABES NH-24 Corridor', tag: 'Commercial Shops & Sheds' },
+        { name: 'Gaur City 1 & 2 (All Avenues)', tag: 'Balcony Pergolas & Modular Kitchens' },
+        { name: 'Char Murti Chowk & Ek Murti', tag: 'Retail Shutters & Stores' },
+        { name: 'Noida Sector 63 & 63A', tag: 'Heavy Industrial Tin Sheds' },
+        { name: 'Noida Sector 62 IT Corridor', tag: 'Corporate Office Fitouts' },
+        { name: 'Siddhartha Vihar & Pratap Vihar', tag: 'Residential Sheds & Grills' },
+        { name: 'Lal Kuan & Chhapraula', tag: 'Heavy Structural Steel Plants' },
+      ],
+      popularServices: [
+        { title: 'Industrial Factory Tin Shed', slug: 'industrial-factory-tin-shed' },
+        { title: 'Home Interior Work', slug: 'home-interior-work' },
+        { title: 'Office Interior Work', slug: 'office-interior-work' },
+        { title: 'Modular Kitchen Fabrication', slug: 'modular-kitchen' },
+        { title: 'Metal Fabrication Work', slug: 'metal-fabrication-work' },
+      ],
+    },
     {
       id: 'noida',
       cityKey: 'noida',
@@ -188,6 +217,16 @@ export function ServiceAreasClient() {
             }`}
           >
             All Cities & Sectors
+          </button>
+          <button
+            onClick={() => setSelectedCity('10km-hub')}
+            className={`px-4 py-2 rounded-full text-xs font-bold font-royal uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer ${
+              selectedCity === '10km-hub'
+                ? 'bg-amber-600 text-white shadow-md'
+                : 'bg-amber-50 text-amber-950 hover:bg-amber-100 border border-amber-300 font-black'
+            }`}
+          >
+            ⭐ 10 KM Hub (Tigri / Chipiyana)
           </button>
           <button
             onClick={() => setSelectedCity('noida')}

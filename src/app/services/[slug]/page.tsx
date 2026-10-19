@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { weldingServices, interiorServices } from '@/lib/services-data';
-import { SITE_CONFIG, SITE_URL } from '@/lib/seo';
+import { SITE_CONFIG, SITE_URL, ALL_10KM_LOCALITIES } from '@/lib/seo';
 import { ServiceDetailClient } from './ServiceDetailClient';
 
 export function generateStaticParams() {
@@ -27,26 +27,32 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const title = `${service.title} in Noida, Gaur City, Gurgaon & Ghaziabad | Royalpro 9557323216`;
-  const description = `${service.tagline ? service.tagline + '. ' : ''}${service.description.slice(0, 140)}... Expert execution across Noida (Sec 62, 63), Gaur City 1 & 2, Gurugram (Manesar), Ghaziabad. Call 9557323216 for free survey.`;
+  const title = `${service.title} in Chipiyana, Tigri, Gaur City, Noida Sec 63 & Ghaziabad | Royalpro 9557323216`;
+  const description = `${service.tagline ? service.tagline + '. ' : ''}${service.description.slice(0, 130)}... Free on-site survey within 10 km: Chipiyana, Tigri Gol Chakkar, Nai Basti Dundahera, Gaur City 1 & 2, Char Murti, Noida Sec 62 & 63, Crossings Republik & Siddhartha Vihar. Call 9557323216.`;
 
   return {
     title,
     description,
     keywords: [
       service.title,
-      `${service.title} Noida`,
-      `${service.title} Gaur City`,
-      `${service.title} Gurgaon`,
-      `${service.title} Ghaziabad`,
-      'Noida Sector 62',
-      'Noida Sector 63',
-      'Gaur City 1',
-      'Gaur City 2',
-      'Greater Noida West',
-      'Gurugram Udyog Vihar',
-      'Manesar IMT',
-      'Ghaziabad Chipiyana',
+      `${service.title} Chipiyana`,
+      `${service.title} Tigri Gol Chakkar`,
+      `${service.title} Yusufpur`,
+      `${service.title} Nai Basti Dundahera`,
+      `${service.title} Crossings Republik`,
+      `${service.title} Gaur City 1`,
+      `${service.title} Gaur City 2`,
+      `${service.title} Char Murti`,
+      `${service.title} Noida Sector 63`,
+      `${service.title} Noida Sector 62`,
+      `${service.title} Noida Sector 63A`,
+      `${service.title} Noida Extension`,
+      `${service.title} Greater Noida West`,
+      `${service.title} Siddhartha Vihar`,
+      `${service.title} Pratap Vihar`,
+      `${service.title} Lal Kuan Ghaziabad`,
+      `${service.title} Bulandshahr Road Industrial Area`,
+      `${service.title} Near Me 10 km`,
       '9557323216',
       service.division === 'welding_industrial' ? 'Welding Work Services' : 'Complete Interior Solution',
       'Royalpro Industrial',
@@ -99,21 +105,22 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       },
     },
     areaServed: [
-      'Noida',
-      'Noida Sector 62',
-      'Noida Sector 63',
-      'Gaur City',
+      ...ALL_10KM_LOCALITIES,
+      'Chipiyana',
+      'Tigri Gol Chakkar',
+      'Yusufpur',
+      'Nai Basti Dundahera',
+      'Crossings Republik',
       'Gaur City 1',
       'Gaur City 2',
-      'Greater Noida West',
-      'Gurugram',
-      'Gurgaon',
-      'Manesar',
+      'Char Murti Chowk',
+      'Noida Sector 63',
+      'Noida Sector 62',
+      'Siddhartha Vihar',
+      'Pratap Vihar',
       'Ghaziabad',
-      'Chipiyana',
+      'Noida',
       'Delhi NCR',
-      'Faridabad',
-      'Uttar Pradesh',
     ],
     offers: {
       '@type': 'Offer',
