@@ -7,7 +7,8 @@ import { useInquiryStore } from '@/stores/useInquiryStore';
 import { useNotification } from '@/contexts/NotificationContext';
 import { ServiceItem, ServiceDivision } from '@/types';
 import { weldingServices, interiorServices } from '@/lib/services-data';
-import { X, Send, AlertCircle, Phone, CheckCircle2 } from 'lucide-react';
+import { formatInquiryWhatsAppMessage, openWhatsAppLink, getWhatsAppUrl, ADMIN_WHATSAPP_NUMBER } from '@/lib/whatsapp';
+import { X, Send, AlertCircle, Phone, CheckCircle2, MessageSquare, ArrowRight } from 'lucide-react';
 
 interface InquiryModalProps {
   isOpen: boolean;
@@ -21,6 +22,12 @@ export function InquiryModal({ isOpen, onClose, preSelectedService }: InquiryMod
 
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [submittedData, setSubmittedData] = useState<{
+    clientName: string;
+    phone: string;
+    serviceTitle: string;
+    whatsappUrl: string;
+  } | null>(null);
 
   const [division, setDivision] = useState<ServiceDivision>(
     preSelectedService?.division || 'welding_industrial'
@@ -67,6 +74,12 @@ export function InquiryModal({ isOpen, onClose, preSelectedService }: InquiryMod
     }));
   };
 
+  const handleResetAndClose = () => {
+    setSubmittedData(null);
+    setFormError(null);
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -81,16 +94,28 @@ export function InquiryModal({ isOpen, onClose, preSelectedService }: InquiryMod
 
     try {
       setLoading(true);
+      // 1. Save to Database & API
       const createdInquiry = await apiClient.submitInquiry(formData);
+      // 2. Real-time update in Admin Drawer & Inquiries state
       addInquiry(createdInquiry);
+
+      // 3. Build WhatsApp message and open WhatsApp to 9557323216
+      const whatsappMsg = formatInquiryWhatsAppMessage(formData);
+      const waUrl = getWhatsAppUrl(whatsappMsg, ADMIN_WHATSAPP_NUMBER);
+      openWhatsAppLink(whatsappMsg, ADMIN_WHATSAPP_NUMBER);
+
+      setSubmittedData({
+        clientName: formData.clientName,
+        phone: formData.phone,
+        serviceTitle: formData.serviceTitle,
+        whatsappUrl: waUrl,
+      });
 
       notify({
         type: 'success',
-        title: 'Inquiry Submitted Successfully!',
-        message: `Thank you ${formData.clientName}. Our engineering supervisor will call you on ${formData.phone} shortly.`,
+        title: 'Inquiry Submitted to Admin & WhatsApp!',
+        message: `Thank you ${formData.clientName}. Saved in Admin portal & forwarded to WhatsApp (9557323216).`,
       });
-
-      onClose();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Submission failed';
       setFormError(msg);
@@ -108,31 +133,93 @@ export function InquiryModal({ isOpen, onClose, preSelectedService }: InquiryMod
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in text-slate-900">
       <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-xl p-6 sm:p-8 shadow-2xl relative max-h-[92vh] overflow-y-auto">
         <button
-          onClick={onClose}
+          onClick={handleResetAndClose}
           className="absolute top-6 right-6 p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
         >
           <X className="w-5 h-5" />
         </button>
 
-        {/* Modal Header */}
-        <div className="mb-4">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-amber-800 px-2.5 py-1 rounded bg-amber-50 border border-amber-200">
-            Instant Quotation & Site Visit
-          </span>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-2">
-            Book Service / Request Quotation
-          </h2>
-          <p className="text-xs text-slate-500 mt-1">
-            Direct Helpline: <strong className="text-amber-600">9557323216</strong> • Free on-site survey & estimate
-          </p>
-        </div>
+        {submittedData ? (
+          /* SUCCESS SCREEN AFTER INQUIRY SUBMITTED TO ADMIN & WHATSAPP */
+          <div className="text-center py-4 space-y-5 animate-fade-in">
+            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
+              <CheckCircle2 className="w-9 h-9" />
+            </div>
 
-        {formError && (
-          <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{formError}</span>
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-emerald-800 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200">
+                Inquiry Logged In Admin & WhatsApp
+              </span>
+              <h2 className="text-2xl font-black text-slate-900 mt-2 font-royal">
+                Thank You, {submittedData.clientName}!
+              </h2>
+              <p className="text-xs text-slate-600 mt-1 max-w-md mx-auto leading-relaxed">
+                Your quotation request for <strong className="text-amber-700">{submittedData.serviceTitle}</strong> has been saved into our database, updated in the Admin panel, and forwarded to our official WhatsApp helpline:
+              </p>
+              <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-900 text-xs font-mono font-bold">
+                Helpline / WhatsApp: <strong className="text-amber-800">9557323216</strong>
+              </div>
+            </div>
+
+            {/* Direct WhatsApp Call-to-Action Button */}
+            <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-left space-y-3">
+              <div className="flex items-center gap-2 text-emerald-900 text-xs font-bold">
+                <MessageSquare className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>WhatsApp Message Dispatched to 9557323216</span>
+              </div>
+              <p className="text-[11px] text-emerald-800 leading-snug">
+                Click below to open WhatsApp directly and chat with Royalpro project engineers with your site photos & drawings:
+              </p>
+              <a
+                href={submittedData.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 px-4 rounded-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 transition-all font-royal"
+              >
+                <MessageSquare className="w-4 h-4" />
+                Open WhatsApp Chat (9557323216)
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <a
+                href="tel:9557323216"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold border border-amber-300 inline-flex items-center justify-center gap-2"
+              >
+                <Phone className="w-3.5 h-3.5 text-amber-600" />
+                Direct Call 9557323216
+              </a>
+              <button
+                type="button"
+                onClick={handleResetAndClose}
+                className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold"
+              >
+                Done / Close
+              </button>
+            </div>
           </div>
-        )}
+        ) : (
+          <>
+            {/* Modal Header */}
+            <div className="mb-4">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-amber-800 px-2.5 py-1 rounded bg-amber-50 border border-amber-200">
+                Instant Quotation & Site Visit
+              </span>
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-2">
+                Book Service / Request Quotation
+              </h2>
+              <p className="text-xs text-slate-500 mt-1">
+                Direct Helpline: <strong className="text-amber-600">9557323216</strong> • Form automatically sent to Admin & WhatsApp
+              </p>
+            </div>
+
+            {formError && (
+              <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{formError}</span>
+              </div>
+            )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Division Selector Tabs */}
@@ -331,6 +418,8 @@ export function InquiryModal({ isOpen, onClose, preSelectedService }: InquiryMod
             </div>
           </div>
         </form>
+        </>
+        )}
       </div>
     </div>
   );

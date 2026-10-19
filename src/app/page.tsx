@@ -18,6 +18,7 @@ import { ScrollTicker } from '@/components/ScrollTicker';
 import { ScrollReveal, FloatingScrollControls } from '@/components/ScrollReveal';
 import { ReviewsSection } from '@/components/ReviewsSection';
 import { WhyChooseUsSection } from '@/components/WhyChooseUsSection';
+import { Local10KmSection } from '@/components/Local10KmSection';
 import { Footer } from '@/components/Footer';
 import { Loader2, Server, CheckCircle2, ShieldCheck, Phone, Mail, MapPin, Database, UserCheck, Table } from 'lucide-react';
 
@@ -159,6 +160,14 @@ export default function RoyalProHome() {
         <div className="my-2 rounded-2xl overflow-hidden border border-amber-500/20">
           <ScrollTicker reverse={true} />
         </div>
+
+        {/* 10 KM Fast Dispatch Coverage Section around Tigri Gol Chakkar / Chipiyana */}
+        <Local10KmSection
+          onOpenInquiry={(title) => {
+            setSelectedService(null);
+            setInquiryModalOpen(true);
+          }}
+        />
 
         {/* Projects Gallery */}
         <ProjectGallery

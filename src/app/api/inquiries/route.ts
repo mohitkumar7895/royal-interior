@@ -94,3 +94,37 @@ export async function PATCH(req: NextRequest) {
     );
   }
 }
+
+// DELETE /api/inquiries - Delete inquiry by ID
+export async function DELETE(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: 'Inquiry ID is required', timestamp: new Date().toISOString() },
+        { status: 400 }
+      );
+    }
+
+    const success = await db.deleteInquiry(id);
+    if (!success) {
+      return NextResponse.json(
+        { success: false, error: 'Inquiry not found or could not be deleted', timestamp: new Date().toISOString() },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: 'Inquiry deleted successfully',
+      timestamp: new Date().toISOString(),
+    });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Failed to delete inquiry';
+    return NextResponse.json(
+      { success: false, error: message, timestamp: new Date().toISOString() },
+      { status: 500 }
+    );
+  }
+}

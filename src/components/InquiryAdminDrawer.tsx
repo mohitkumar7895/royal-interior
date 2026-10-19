@@ -5,7 +5,8 @@ import { useInquiryStore } from '@/stores/useInquiryStore';
 import { apiClient } from '@/lib/api-client';
 import { useNotification } from '@/contexts/NotificationContext';
 import { formatINR, formatSqFt, formatDate } from '@/lib/utils';
-import { X, ClipboardList, MapPin, Phone, Clock } from 'lucide-react';
+import { X, ClipboardList, MapPin, Phone, Clock, MessageSquare, Send } from 'lucide-react';
+import { formatInquiryWhatsAppMessage, getWhatsAppUrl, ADMIN_WHATSAPP_NUMBER } from '@/lib/whatsapp';
 import { Inquiry } from '@/types';
 
 export function InquiryAdminDrawer() {
@@ -138,6 +139,33 @@ export function InquiryAdminDrawer() {
                       &quot;{inq.requirements}&quot;
                     </p>
                   )}
+
+                  {/* WhatsApp & Call Direct Action Buttons */}
+                  <div className="flex flex-wrap items-center gap-2 pt-1">
+                    <a
+                      href={getWhatsAppUrl(
+                        `Hello ${inq.clientName}, Royalpro Industrial received your quote request for ${inq.serviceTitle}. We would like to discuss your site dimensions & requirements.`,
+                        inq.phone
+                      )}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-2.5 py-1 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] inline-flex items-center gap-1 shadow-2xs"
+                    >
+                      <MessageSquare className="w-3 h-3" />
+                      Chat on WhatsApp
+                    </a>
+
+                    <a
+                      href={getWhatsAppUrl(formatInquiryWhatsAppMessage(inq), ADMIN_WHATSAPP_NUMBER)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-2.5 py-1 rounded-full bg-slate-900 hover:bg-slate-800 text-emerald-300 font-bold text-[10px] inline-flex items-center gap-1 border border-slate-700"
+                      title="Send this inquiry to Royalpro WhatsApp (9557323216)"
+                    >
+                      <Send className="w-3 h-3 text-emerald-400" />
+                      Forward to 9557323216
+                    </a>
+                  </div>
 
                   {/* Action status toggle */}
                   <div className="pt-2 border-t border-slate-200 flex items-center justify-between text-[11px]">

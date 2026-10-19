@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Outfit, Cinzel } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/Providers';
-import { SITE_CONFIG, SITE_URL } from '@/lib/seo';
+import { SITE_CONFIG, SITE_URL, ALL_10KM_LOCALITIES } from '@/lib/seo';
 import { weldingServices, interiorServices } from '@/lib/services-data';
 
 const outfit = Outfit({
@@ -170,31 +170,40 @@ export default function RootLayout({
       },
     ],
     areaServed: [
-      'Noida',
-      'Noida Sector 62',
-      'Noida Sector 63',
-      'Noida Sector 18',
-      'Noida Sector 150',
-      'Gaur City',
+      ...ALL_10KM_LOCALITIES,
+      'Chipiyana',
+      'Tigri Gol Chakkar',
+      'Yusufpur',
+      'Nai Basti Dundahera',
+      'Crossings Republik',
+      'Shahberi',
       'Gaur City 1',
       'Gaur City 2',
-      'Char Murti',
+      'Char Murti Chowk',
+      'Noida Extension',
       'Greater Noida West',
-      'Greater Noida',
-      'Gurugram',
-      'Gurgaon',
-      'Udyog Vihar',
-      'Manesar',
+      'Noida Sector 63',
+      'Noida Sector 62',
+      'Noida Sector 63A',
+      'Noida Sector 64',
+      'Noida Sector 65',
+      'Siddhartha Vihar',
+      'Pratap Vihar',
+      'Lal Kuan Ghaziabad',
+      'Bulandshahr Road Industrial Area',
       'Ghaziabad',
-      'Chipiyana',
-      'Crossing Republik',
-      'Sahibabad',
+      'Noida',
       'Delhi NCR',
-      'Faridabad',
-      'Uttar Pradesh',
-      'Haryana',
-      'India',
     ],
+    serviceArea: {
+      '@type': 'GeoCircle',
+      geoMidpoint: {
+        '@type': 'GeoCoordinates',
+        latitude: SITE_CONFIG.geo.latitude,
+        longitude: SITE_CONFIG.geo.longitude,
+      },
+      geoRadius: '10000', // 10 KM Radius from Tigri Gol Chakkar / Chipiyana
+    },
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: 'Industrial Shed & Interior Solutions Catalogue',

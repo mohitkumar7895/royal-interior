@@ -4,14 +4,16 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { Phone, Mail, MapPin, Send, CheckCircle2, ShieldCheck, Clock, MessageSquare } from 'lucide-react';
+import { Phone, Mail, MapPin, Send, CheckCircle2, ShieldCheck, Clock, MessageSquare, ArrowRight } from 'lucide-react';
 import { useNotification } from '@/contexts/NotificationContext';
 import { apiClient } from '@/lib/api-client';
+import { formatInquiryWhatsAppMessage, openWhatsAppLink, getWhatsAppUrl, ADMIN_WHATSAPP_NUMBER } from '@/lib/whatsapp';
 
 export default function ContactPage() {
   const { notify } = useNotification();
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submittedWaUrl, setSubmittedWaUrl] = useState<string>('');
 
   const [form, setForm] = useState({
     clientName: '',
@@ -35,21 +37,43 @@ export default function ContactPage() {
 
     try {
       setSubmitting(true);
+      const siteLocation = form.location.trim() || 'Delhi NCR / Site Inspection';
+      const serviceTitle =
+        form.division === 'interior_solution'
+          ? 'Turnkey Interior Solution & Site Survey'
+          : 'Industrial Factory Tin Shed & Welding Survey';
+
+      // 1. Submit to API / Database & Admin Inquiries pipeline
       await apiClient.submitInquiry({
         clientName: form.clientName,
         phone: form.phone,
         email: form.email,
         division: form.division as any,
-        serviceTitle: 'General Direct Contact Request',
-        location: form.location,
+        serviceTitle,
+        location: siteLocation,
         requirements: form.requirements,
       });
+
+      // 2. Dispatch to WhatsApp 9557323216
+      const whatsappMsg = formatInquiryWhatsAppMessage({
+        clientName: form.clientName,
+        phone: form.phone,
+        email: form.email,
+        division: form.division,
+        serviceTitle,
+        location: siteLocation,
+        requirements: form.requirements,
+      });
+
+      const waUrl = getWhatsAppUrl(whatsappMsg, ADMIN_WHATSAPP_NUMBER);
+      setSubmittedWaUrl(waUrl);
+      openWhatsAppLink(whatsappMsg, ADMIN_WHATSAPP_NUMBER);
 
       setSubmitted(true);
       notify({
         type: 'success',
-        title: 'Contact Request Received',
-        message: 'Our project engineer will contact you shortly on ' + form.phone,
+        title: 'Inquiry Submitted to Admin & WhatsApp!',
+        message: 'Your inquiry has been logged in Admin and dispatched to WhatsApp: 9557323216',
       });
     } catch (err: any) {
       notify({
@@ -167,28 +191,69 @@ export default function ContactPage() {
               </p>
 
               {submitted ? (
-                <div className="p-8 rounded-2xl bg-emerald-50 border border-emerald-200 text-center space-y-3">
-                  <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto" />
-                  <h3 className="text-base font-bold text-emerald-900 font-royal">Thank You! Request Received</h3>
-                  <p className="text-xs text-emerald-700 max-w-md mx-auto">
-                    We have logged your inspection request in our database. Our technical team is reviewing your requirements and will connect via <strong>{form.phone}</strong>.
-                  </p>
-                  <button
-                    onClick={() => {
-                      setSubmitted(false);
-                      setForm({
-                        clientName: '',
-                        phone: '',
-                        email: '',
-                        division: 'welding_industrial',
-                        location: '',
-                        requirements: '',
-                      });
-                    }}
-                    className="inline-flex px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full text-xs font-bold transition-all"
-                  >
-                    Send Another Inquiry
-                  </button>
+                <div className="p-8 rounded-3xl bg-emerald-50 border border-emerald-200 text-center space-y-4 animate-fade-in">
+                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
+                    <CheckCircle2 className="w-9 h-9" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-emerald-800 px-3 py-1 rounded-full bg-emerald-100 border border-emerald-300">
+                      Inquiry Logged In Admin & WhatsApp
+                    </span>
+                    <h3 className="text-xl font-black text-emerald-950 font-royal mt-2">
+                      Thank You {form.clientName}! Request Received
+                    </h3>
+                    <p className="text-xs text-emerald-800 max-w-md mx-auto mt-1 leading-relaxed">
+                      We have logged your inspection request in our database and forwarded it to our Admin and official WhatsApp helpline (<strong>9557323216</strong>).
+                    </p>
+                  </div>
+
+                  {submittedWaUrl && (
+                    <div className="p-4 rounded-2xl bg-white border border-emerald-300 text-left space-y-2 shadow-xs">
+                      <div className="flex items-center gap-2 text-emerald-900 text-xs font-bold">
+                        <MessageSquare className="w-4 h-4 text-emerald-600 shrink-0" />
+                        <span>Instant WhatsApp Connect (9557323216)</span>
+                      </div>
+                      <p className="text-[11px] text-slate-600">
+                        Click below to open WhatsApp chat immediately with our senior site engineer:
+                      </p>
+                      <a
+                        href={submittedWaUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-3 px-4 rounded-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20 transition-all font-royal"
+                      >
+                        <MessageSquare className="w-4 h-4" />
+                        Open WhatsApp Chat (9557323216)
+                        <ArrowRight className="w-4 h-4" />
+                      </a>
+                    </div>
+                  )}
+
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                    <a
+                      href="tel:9557323216"
+                      className="w-full sm:w-auto px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black rounded-full text-xs transition-all inline-flex items-center justify-center gap-1.5 shadow-sm"
+                    >
+                      <Phone className="w-3.5 h-3.5" />
+                      Direct Call 9557323216
+                    </a>
+                    <button
+                      onClick={() => {
+                        setSubmitted(false);
+                        setForm({
+                          clientName: '',
+                          phone: '',
+                          email: '',
+                          division: 'welding_industrial',
+                          location: '',
+                          requirements: '',
+                        });
+                      }}
+                      className="w-full sm:w-auto px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-full text-xs font-bold transition-all"
+                    >
+                      Send Another Inquiry
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">

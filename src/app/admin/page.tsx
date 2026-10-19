@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ServiceItem, ServiceDivision, Inquiry } from '@/types';
+import { formatINR, formatSqFt, formatDate } from '@/lib/utils';
+import { formatInquiryWhatsAppMessage, getWhatsAppUrl, ADMIN_WHATSAPP_NUMBER } from '@/lib/whatsapp';
 import {
   Factory,
   Flame,
@@ -31,6 +33,13 @@ import {
   UserCheck,
   Menu,
   Copy,
+  MessageSquare,
+  Send,
+  Clock,
+  MapPin,
+  Building2,
+  Ruler,
+  DollarSign,
 } from 'lucide-react';
 
 export default function AdminDashboardPage() {
@@ -432,6 +441,45 @@ export default function AdminDashboardPage() {
       }
     } catch {
       setSettingsMsg({ type: 'error', text: 'Error saving settings.' });
+    }
+  };
+
+  // Handle Inquiry Status Update
+  const handleUpdateInquiryStatus = async (id: string, status: Inquiry['status']) => {
+    try {
+      const res = await fetch('/api/inquiries', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setInquiries((prev) =>
+          prev.map((inq) => (inq.id === id ? { ...inq, status } : inq))
+        );
+      } else {
+        alert(data.error || 'Failed to update status');
+      }
+    } catch {
+      alert('Error updating inquiry status');
+    }
+  };
+
+  // Handle Inquiry Deletion
+  const handleDeleteInquiry = async (id: string, clientName: string) => {
+    if (!confirm(`Are you sure you want to delete inquiry from "${clientName}"?`)) return;
+    try {
+      const res = await fetch(`/api/inquiries?id=${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (data.success) {
+        setInquiries((prev) => prev.filter((inq) => inq.id !== id));
+      } else {
+        alert(data.error || 'Failed to delete inquiry');
+      }
+    } catch {
+      alert('Error deleting inquiry');
     }
   };
 
@@ -870,54 +918,220 @@ export default function AdminDashboardPage() {
 
         {/* TAB 2: INQUIRIES MANAGEMENT */}
         {activeTab === 'inquiries' && (
-          <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 overflow-hidden">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 overflow-hidden space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200">
               <div>
-                <h3 className="text-base font-bold text-slate-900 font-royal">Submitted Client Inquiries</h3>
-                <p className="text-xs text-slate-500">Live records from client requests</p>
+                <h3 className="text-base sm:text-lg font-black text-slate-900 font-royal">
+                  Client Inquiries & Quote Requests
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Live MySQL records synced with website forms & WhatsApp (Helpline: <strong className="text-amber-700">9557323216</strong>)
+                </p>
               </div>
-              <span className="text-xs font-bold px-3 py-1 bg-amber-50 text-amber-700 rounded-full border border-amber-200">
-                Total: {inquiries.length}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold px-3 py-1 bg-amber-50 text-amber-800 rounded-full border border-amber-200">
+                  Total Records: {inquiries.length}
+                </span>
+                <button
+                  onClick={loadData}
+                  className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer"
+                  title="Refresh Inquiries"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3.5">
               {inquiries.length === 0 ? (
-                <div className="p-8 text-center text-slate-400 text-xs">
-                  No inquiries received yet.
+                <div className="p-12 text-center text-slate-400 text-xs bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                  <ClipboardList className="w-10 h-10 mx-auto mb-2 text-slate-300" />
+                  <p className="font-semibold text-slate-600">No client inquiries received yet.</p>
+                  <p className="text-[11px] text-slate-400 mt-1">
+                    When visitors submit the quote or contact form on the website, they will appear here and on WhatsApp ({ADMIN_WHATSAPP_NUMBER}).
+                  </p>
                 </div>
               ) : (
-                inquiries.map((inq) => (
-                  <div
-                    key={inq.id}
-                    className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-amber-400 transition-colors"
-                  >
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-bold text-slate-900 text-sm font-royal">{inq.clientName}</h4>
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 font-bold uppercase">
-                          {inq.division === 'welding_industrial' ? 'Welding Shed' : 'Interior'}
-                        </span>
-                      </div>
-                      <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 mt-1">
-                        <span className="flex items-center gap-1 font-mono font-bold text-amber-800">
-                          <Phone className="w-3.5 h-3.5 text-amber-600" /> {inq.phone}
-                        </span>
-                        {inq.email && <span>{inq.email}</span>}
-                        {inq.location && <span>• Location: {inq.location}</span>}
-                      </div>
-                      {inq.requirements && (
-                        <p className="text-xs text-slate-500 mt-2 bg-white p-2.5 rounded-xl border border-slate-200">
-                          &quot;{inq.requirements}&quot;
-                        </p>
-                      )}
-                    </div>
+                inquiries.map((inq) => {
+                  const clientWaUrl = getWhatsAppUrl(
+                    `Hello ${inq.clientName}, Royalpro Industrial received your quote request for ${inq.serviceTitle}. We would like to discuss your requirements.`,
+                    inq.phone
+                  );
+                  const forwardWaUrl = getWhatsAppUrl(
+                    formatInquiryWhatsAppMessage(inq),
+                    ADMIN_WHATSAPP_NUMBER
+                  );
 
-                    <div className="text-right shrink-0 text-xs text-slate-500">
-                      <p className="font-mono">{new Date(inq.createdAt).toLocaleDateString()}</p>
+                  return (
+                    <div
+                      key={inq.id}
+                      className="p-5 rounded-2xl bg-slate-50/80 border border-slate-200 hover:border-amber-300 hover:shadow-sm transition-all space-y-3.5"
+                    >
+                      {/* Top Header: Client Name, Company, Status Badge & Time */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-200/80">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h4 className="font-black text-base text-slate-900 font-royal">
+                            {inq.clientName}
+                          </h4>
+                          {inq.companyName && (
+                            <span className="text-xs font-bold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                              {inq.companyName}
+                            </span>
+                          )}
+                          <span
+                            className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full ${
+                              inq.division === 'welding_industrial'
+                                ? 'bg-amber-100 text-amber-900'
+                                : 'bg-indigo-100 text-indigo-900'
+                            }`}
+                          >
+                            {inq.division === 'welding_industrial' ? 'Welding Shed' : 'Interior Solution'}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${
+                              inq.status === 'new'
+                                ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                                : inq.status === 'quotation_sent'
+                                ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                                : 'bg-slate-200 text-slate-700'
+                            }`}
+                          >
+                            {inq.status.replace('_', ' ')}
+                          </span>
+                          <span className="text-[11px] text-slate-400 flex items-center gap-1 font-mono">
+                            <Clock className="w-3 h-3 text-slate-400" />
+                            {formatDate(inq.createdAt)}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Service Details Grid */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs bg-white p-3.5 rounded-xl border border-slate-200">
+                        <div>
+                          <span className="text-[10px] text-slate-400 font-semibold block uppercase tracking-wider">
+                            Requested Service:
+                          </span>
+                          <span className="font-bold text-slate-900 block mt-0.5">
+                            {inq.serviceTitle}
+                          </span>
+                        </div>
+
+                        <div>
+                          <span className="text-[10px] text-slate-400 font-semibold block uppercase tracking-wider">
+                            Dimensions & Area:
+                          </span>
+                          <span className="font-semibold text-slate-800 block mt-0.5">
+                            {inq.plotLengthFeet && inq.plotWidthFeet
+                              ? `${inq.plotLengthFeet} ft × ${inq.plotWidthFeet} ft (${inq.totalAreaSqFt || inq.plotLengthFeet * inq.plotWidthFeet} sq.ft)`
+                              : inq.totalAreaSqFt
+                              ? formatSqFt(inq.totalAreaSqFt)
+                              : 'Site inspection required'}
+                          </span>
+                        </div>
+
+                        <div>
+                          <span className="text-[10px] text-slate-400 font-semibold block uppercase tracking-wider">
+                            Estimated Budget:
+                          </span>
+                          <span className="font-black text-amber-700 block mt-0.5">
+                            {inq.estimatedBudget ? formatINR(inq.estimatedBudget) : 'Pending quotation'}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Contact & Location Strip */}
+                      <div className="flex flex-wrap items-center gap-4 text-xs text-slate-700">
+                        <a
+                          href={`tel:${inq.phone}`}
+                          className="flex items-center gap-1.5 text-amber-800 hover:text-amber-900 font-mono font-bold"
+                        >
+                          <Phone className="w-3.5 h-3.5 text-amber-600" />
+                          {inq.phone}
+                        </a>
+                        {inq.email && (
+                          <span className="text-slate-600 truncate">
+                            📧 {inq.email}
+                          </span>
+                        )}
+                        <span className="flex items-center gap-1 text-slate-600">
+                          <MapPin className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                          {inq.location}
+                        </span>
+                      </div>
+
+                      {/* Client Requirements Box */}
+                      {inq.requirements && (
+                        <div className="text-xs text-slate-600 bg-white p-3 rounded-xl border border-slate-200">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                            Client Notes / Requirements:
+                          </span>
+                          &quot;{inq.requirements}&quot;
+                        </div>
+                      )}
+
+                      {/* Actions Toolbar */}
+                      <div className="pt-2 flex flex-wrap items-center justify-between gap-2.5">
+                        {/* WhatsApp & Call Buttons */}
+                        <div className="flex flex-wrap items-center gap-2">
+                          <a
+                            href={clientWaUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-3.5 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs inline-flex items-center gap-1.5 shadow-sm active:scale-95 transition-all"
+                          >
+                            <MessageSquare className="w-3.5 h-3.5" />
+                            Chat with Client on WhatsApp
+                          </a>
+
+                          <a
+                            href={forwardWaUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 text-amber-300 font-bold text-xs inline-flex items-center gap-1.5 border border-slate-700 shadow-sm active:scale-95 transition-all"
+                            title="Forward complete inquiry details to official WhatsApp 9557323216"
+                          >
+                            <Send className="w-3.5 h-3.5 text-amber-400" />
+                            Forward to 9557323216
+                          </a>
+
+                          <a
+                            href={`tel:${inq.phone}`}
+                            className="px-3 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs inline-flex items-center gap-1"
+                          >
+                            <Phone className="w-3.5 h-3.5 text-amber-600" />
+                            Call
+                          </a>
+                        </div>
+
+                        {/* Status Toggle & Delete */}
+                        <div className="flex items-center gap-1.5">
+                          <select
+                            value={inq.status}
+                            onChange={(e) =>
+                              handleUpdateInquiryStatus(inq.id, e.target.value as Inquiry['status'])
+                            }
+                            className="text-xs px-2.5 py-1.5 rounded-full bg-white border border-slate-300 text-slate-700 font-medium focus:outline-none focus:border-amber-500"
+                          >
+                            <option value="new">New</option>
+                            <option value="quotation_sent">Quotation Sent</option>
+                            <option value="closed">Closed</option>
+                          </select>
+
+                          <button
+                            onClick={() => handleDeleteInquiry(inq.id, inq.clientName)}
+                            className="p-1.5 rounded-full text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                            title="Delete Inquiry"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
           </div>
