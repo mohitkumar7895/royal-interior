@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Outfit, Cinzel } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/Providers';
+import { GmbUniversalPhoneBar } from '@/components/GmbUniversalPhoneBar';
 import { SITE_CONFIG, SITE_URL, ALL_10KM_LOCALITIES } from '@/lib/seo';
 import { weldingServices, interiorServices } from '@/lib/services-data';
 
@@ -45,12 +46,21 @@ export const metadata: Metadata = {
   },
   manifest: '/site.webmanifest',
   formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
+    email: true,
+    address: true,
+    telephone: true,
   },
   alternates: {
     canonical: '/',
+  },
+  other: {
+    'business:contact_data:phone_number': '+919557323216',
+    'business:contact_data:country_name': 'India',
+    'business:contact_data:locality': 'Ghaziabad',
+    'business:contact_data:region': 'Uttar Pradesh',
+    'business:contact_data:postal_code': '201009',
+    'business:contact_data:street_address': 'Chipiyana, Tigri Gol Chakkar, Yusufpur, Nai Basti Dundahera',
+    'telephone': '+919557323216',
   },
   openGraph: {
     title: `${SITE_CONFIG.websiteName} | Factory Tin Shed Work & Complete Interior Solution`,
@@ -113,7 +123,7 @@ export default function RootLayout({
 
   const organizationJsonLd = {
     '@context': 'https://schema.org',
-    '@type': ['Organization', 'HomeAndConstructionBusiness', 'GeneralContractor'],
+    '@type': ['LocalBusiness', 'HomeAndConstructionBusiness', 'GeneralContractor', 'Organization'],
     '@id': `${SITE_URL}/#organization`,
     name: 'Royalpro Industrial',
     legalName: SITE_CONFIG.legalName,
@@ -133,7 +143,7 @@ export default function RootLayout({
       height: 512,
     },
     image: `${SITE_URL}/images/royalpro_logo.png`,
-    telephone: SITE_CONFIG.telephone,
+    telephone: '+919557323216',
     email: SITE_CONFIG.email,
     priceRange: '₹₹',
     address: {
@@ -147,10 +157,23 @@ export default function RootLayout({
     contactPoint: [
       {
         '@type': 'ContactPoint',
-        telephone: SITE_CONFIG.telephone,
+        telephone: '+919557323216',
         contactType: 'customer service',
         areaServed: 'IN',
         availableLanguage: ['en', 'hi'],
+      },
+      {
+        '@type': 'ContactPoint',
+        telephone: '+91 95573 23216',
+        contactType: 'sales',
+        areaServed: 'IN',
+        availableLanguage: ['en', 'hi'],
+      },
+      {
+        '@type': 'ContactPoint',
+        telephone: '9557323216',
+        contactType: 'technical support',
+        areaServed: 'IN',
       },
     ],
     openingHoursSpecification: [
@@ -261,9 +284,12 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${outfit.variable} ${cinzel.variable} font-sans min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-amber-500 selection:text-white`}
+        className={`${outfit.variable} ${cinzel.variable} font-sans min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-amber-500 selection:text-white pb-14 md:pb-0`}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <GmbUniversalPhoneBar />
+        </Providers>
       </body>
     </html>
   );
